@@ -26,9 +26,7 @@ app.post('/login', (req, res) => {
     if (req.body.isAdmin) {
         res.json({"result": "login as admin is not permitted"})
     }
-
     const loginData = createLoginData(req.body);
-    console.log(loginData)
     const jwtKey = jwt.sign({
         username: loginData.username,
         isAdmin: loginData.isAdmin || false
@@ -40,7 +38,6 @@ app.get('/admin', (req, res) => {
     if (!req.cookies["jwtkey"]) {
         res.json({"result":"You are not logged in!"});
     }
-
     const jwtKey = req.cookies["jwtkey"];
     if (jwtKey) {
         try {
@@ -48,7 +45,6 @@ app.get('/admin', (req, res) => {
             if (payload.isAdmin) {
                 return res.json({"result":"logged in, your flag is " + process.env.FLAG});
             }
-
             return res.json({"result":"logged in as " + payload.username});
         } catch (e) {
             console.log(e);
